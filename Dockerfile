@@ -51,8 +51,6 @@ RUN wget -c --no-check-certificate http://tengine.taobao.org/download/tengine-$T
 RUN echo "export PATH=/usr/local/tengine/sbin:/usr/local/php/bin:\$PATH" >> /etc/profile \
     && . /etc/profile
 
-ADD ./nginx /etc/init.d/nginx
-RUN update-rc.d nginx defaults
 ADD ./nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
 ADD ./proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
 
@@ -62,4 +60,8 @@ RUN mkdir -p $WWWROOT_DIR/default \
 
 RUN ldconfig
 
+WORKDIR /usr/local/tengine/conf
+
 EXPOSE 80 443
+
+ENTRYPOINT ["/usr/local/tengine/sbin/nginx", "-c", "/usr/local/tengine/conf/nginx.conf"]
