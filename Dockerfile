@@ -45,6 +45,7 @@ RUN wget -c --no-check-certificate http://tengine.taobao.org/download/tengine-$T
         --with-http_flv_module \
         --with-http_concat_module=shared \
         --with-http_sysguard_module=shared \
+        --sbin-path=/usr/sbin/nginx \
     && make \
     && make install
 
@@ -64,4 +65,4 @@ WORKDIR /usr/local/tengine/conf
 
 EXPOSE 80 443
 
-ENTRYPOINT ["/usr/local/tengine/sbin/nginx", "-c", "/usr/local/tengine/conf/nginx.conf"]
+ENTRYPOINT /usr/local/tengine/sbin/nginx -c /usr/local/tengine/conf/nginx.conf
