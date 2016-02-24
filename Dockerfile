@@ -48,17 +48,16 @@ RUN wget -c --no-check-certificate http://tengine.taobao.org/download/tengine-$T
     make && \
     make install
 
-RUN ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
-    ldconfig
-
 ADD ./nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
 ADD ./proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
+ADD ./nginx /etc/init.d/nginx
+
+RUN ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
+    ldconfig
 
 RUN mkdir -p $WWWROOT_DIR/default && \
     echo "Hello World!" > /$WWWROOT_DIR/default/index.html && \
     rm -rf /tmp/*
-
-WORKDIR /usr/local/tengine/conf
 
 EXPOSE 80 443
 
