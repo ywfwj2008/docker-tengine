@@ -52,15 +52,17 @@ ADD ./nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
 ADD ./proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
 ADD ./nginx /etc/init.d/nginx
 
-RUN ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
+RUN chmod +x /etc/init.d/nginx && \
+    ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
     ldconfig
 
-RUN mkdir -p $WWWROOT_DIR/default && \
+RUN mkdir -p $WWWLOGS_DIR && \
+    mkdir -p $WWWROOT_DIR/default && \
     echo "Hello World!" > /$WWWROOT_DIR/default/index.html && \
     rm -rf /tmp/*
 
 EXPOSE 80 443
 
-ENTRYPOINT ["nginx"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
 CMD ["-c", "/usr/local/tengine/conf/nginx.conf"]
