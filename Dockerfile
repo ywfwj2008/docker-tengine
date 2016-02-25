@@ -1,4 +1,4 @@
-FROM debian:8
+FROM ubuntu:latest
 
 MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 
@@ -63,6 +63,6 @@ RUN mkdir -p $WWWLOGS_DIR && \
 
 EXPOSE 80 443
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
-CMD ["-c", "/usr/local/tengine/conf/nginx.conf"]
+# CMD ["-c", "/usr/local/tengine/conf/nginx.conf"]
