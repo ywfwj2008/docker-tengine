@@ -3,7 +3,7 @@ FROM ubuntu:latest
 MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 
 ENV TENGINE_INSTALL_DIR /usr/local/tengine
-ENV TENGINE_VERSION 2.1.2
+ENV TENGINE_VERSION 2.1.2_f
 ENV PCRE_VERSION 8.38
 ENV RUN_USER www
 ENV WWWROOT_DIR /home/wwwroot
@@ -25,7 +25,7 @@ RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programm
     make install
 
 # install tengine
-RUN wget -c --no-check-certificate http://tengine.taobao.org/download/tengine-$TENGINE_VERSION.tar.gz && \
+RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
     tar xzf tengine-$TENGINE_VERSION.tar.gz && \
     echo tengine-$TENGINE_VERSION && \
     cd tengine-$TENGINE_VERSION && \
