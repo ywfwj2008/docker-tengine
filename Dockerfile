@@ -27,7 +27,7 @@ RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programm
 # install tengine
 RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
     tar xzf tengine-$TENGINE_VERSION.tar.gz && \
-    cd tengine-$TENGINE_VERSION && \
+    cd tengine-tengine-$TENGINE_VERSION && \
     # Modify Tengine version
     sed -i 's@TENGINE "/" TENGINE_VERSION@"Tengine/unknown"@' src/core/nginx.h && \
     # close debug
