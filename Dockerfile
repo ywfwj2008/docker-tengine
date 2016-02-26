@@ -2,15 +2,15 @@ FROM ubuntu:latest
 
 MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 
-ENV TENGINE_INSTALL_DIR /usr/local/tengine
-ENV TENGINE_VERSION 2.1.2_f
-ENV PCRE_VERSION 8.38
-ENV RUN_USER www
-ENV WWWROOT_DIR /home/wwwroot
-ENV WWWLOGS_DIR /home/wwwlogs
-ENV MALLOC_MODULE ""
+ENV TENGINE_INSTALL_DIR=/usr/local/tengine
+ENV TENGINE_VERSION=2.1.2_f
+ENV PCRE_VERSION=8.38
+ENV RUN_USER=www
+ENV WWWROOT_DIR=/home/wwwroot
+ENV WWWLOGS_DIR=/home/wwwlogs
+ENV MALLOC_MODULE=""
 
-RUN apt-get update && \
+RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev
 RUN useradd -M -s /sbin/nologin $RUN_USER
 
