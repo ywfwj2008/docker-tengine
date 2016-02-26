@@ -8,7 +8,7 @@ ENV PCRE_VERSION 8.38
 ENV RUN_USER www
 ENV WWWROOT_DIR /home/wwwroot
 ENV WWWLOGS_DIR /home/wwwlogs
-ENV MALLOC_MODULE
+ENV MALLOC_MODULE=""
 
 RUN apt-get update && \
     apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev
