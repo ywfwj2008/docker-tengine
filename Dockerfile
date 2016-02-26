@@ -63,8 +63,6 @@ RUN mkdir -p $WWWLOGS_DIR && \
     echo "Hello World!" > /$WWWROOT_DIR/default/index.html && \
     rm -rf /tmp/*
 
-EXPOSE 80 443
-
+# EXPOSE 80 443
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
 # CMD ["-c", "/usr/local/tengine/conf/nginx.conf"]
