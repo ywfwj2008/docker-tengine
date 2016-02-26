@@ -8,6 +8,7 @@ ENV PCRE_VERSION 8.38
 ENV RUN_USER www
 ENV WWWROOT_DIR /home/wwwroot
 ENV WWWLOGS_DIR /home/wwwlogs
+ENV MALLOC_MODULE
 
 RUN apt-get update && \
     apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev
@@ -44,7 +45,8 @@ RUN wget -c --no-check-certificate http://tengine.taobao.org/download/tengine-$T
         --with-http_realip_module \
         --with-http_flv_module \
         --with-http_concat_module=shared \
-        --with-http_sysguard_module=shared && \
+        --with-http_sysguard_module=shared \
+        $MALLOC_MODULE && \
     make && \
     make install
 
@@ -53,6 +55,7 @@ ADD ./proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
 ADD ./nginx /etc/init.d/nginx
 
 RUN chmod +x /etc/init.d/nginx && \
+    update-rc.d nginx defaults && \
     ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
     ldconfig
 
