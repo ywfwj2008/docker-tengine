@@ -8,13 +8,24 @@ ENV PCRE_VERSION=8.38
 ENV RUN_USER=www
 ENV WWWROOT_DIR=/home/wwwroot
 ENV WWWLOGS_DIR=/home/wwwlogs
-ENV MALLOC_MODULE=""
+ENV JEMALLOC_VERSION=4.1.0
+ENV MALLOC_MODULE="--with-jemalloc"
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev
 RUN useradd -M -s /sbin/nologin $RUN_USER
 
 WORKDIR /tmp
+
+#install jemalloc
+RUN wget -c --no-check-certificate https://github.com/jemalloc/jemalloc/releases/download/$JEMALLOC_VERSION/jemalloc-$JEMALLOC_VERSION.tar.bz2 && \
+    tar xjf jemalloc-$JEMALLOC_VERSION.tar.bz2 && \
+    cd jemalloc-$JEMALLOC_VERSION && \
+    ./configure && \
+    make && make install && \
+    ln -s /usr/local/lib/libjemalloc.so.2 /usr/lib/libjemalloc.so.1 && \
+    echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf && \
+    ldconfig
 
 # install pcre
 RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE_VERSION.tar.gz && \
