@@ -63,6 +63,7 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
 
 ADD ./conf/nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
 ADD ./conf/proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
+ADD ./conf/none.conf  $TENGINE_INSTALL_DIR/conf/none.conf
 ADD ./etc/init.d/nginx /etc/init.d/nginx
 ADD ./etc/logrotate.d/nginx /etc/logrotate.d/nginx
 
@@ -71,7 +72,7 @@ RUN chmod +x /etc/init.d/nginx && \
     ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
     ldconfig
 
-# end
+# ending
 RUN mkdir -p $WWWLOGS_DIR && \
     mkdir -p $WWWROOT_DIR/default && \
     echo "Hello World!" > /$WWWROOT_DIR/default/index.html && \
