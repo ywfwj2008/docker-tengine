@@ -8,6 +8,7 @@ ENV PCRE_VERSION=8.38
 ENV RUN_USER=www
 ENV WWWROOT_DIR=/home/wwwroot
 ENV WWWLOGS_DIR=/home/wwwlogs
+
 ENV JEMALLOC_VERSION=4.1.0
 ENV MALLOC_MODULE="--with-jemalloc"
 
@@ -17,13 +18,13 @@ RUN useradd -M -s /sbin/nologin $RUN_USER
 
 WORKDIR /tmp
 
-#install jemalloc
+# install jemalloc
+# 查看jemalloc状态  lsof -n | grep jemalloc
 RUN wget -c --no-check-certificate https://github.com/jemalloc/jemalloc/releases/download/$JEMALLOC_VERSION/jemalloc-$JEMALLOC_VERSION.tar.bz2 && \
     tar xjf jemalloc-$JEMALLOC_VERSION.tar.bz2 && \
     cd jemalloc-$JEMALLOC_VERSION && \
     ./configure && \
     make && make install && \
-    ln -s /usr/local/lib/libjemalloc.so.2 /usr/lib/libjemalloc.so.1 && \
     echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf && \
     ldconfig
 
@@ -60,20 +61,20 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
     make && \
     make install
 
-ADD ./nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
-ADD ./proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
-ADD ./nginx /etc/init.d/nginx
+ADD ./conf/nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
+ADD ./conf/proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
+ADD ./etc/init.d/nginx /etc/init.d/nginx
+ADD ./etc/logrotate.d/nginx /etc/logrotate.d/nginx
 
 RUN chmod +x /etc/init.d/nginx && \
     update-rc.d nginx defaults && \
     ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
     ldconfig
 
+# end
 RUN mkdir -p $WWWLOGS_DIR && \
     mkdir -p $WWWROOT_DIR/default && \
     echo "Hello World!" > /$WWWROOT_DIR/default/index.html && \
     rm -rf /tmp/*
 
-# EXPOSE 80 443
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
-# CMD ["-c", "/usr/local/tengine/conf/nginx.conf"]
+# CMD ["nginx", "-g", "daemon off;"]
