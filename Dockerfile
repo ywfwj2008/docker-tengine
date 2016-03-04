@@ -1,5 +1,4 @@
-FROM ubuntu:latest
-
+FROM debian:jessie
 MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 
 ENV TENGINE_INSTALL_DIR=/usr/local/tengine
@@ -8,7 +7,6 @@ ENV PCRE_VERSION=8.38
 ENV RUN_USER=www
 ENV WWWROOT_DIR=/home/wwwroot
 ENV WWWLOGS_DIR=/home/wwwlogs
-
 ENV JEMALLOC_VERSION=4.1.0
 ENV MALLOC_MODULE="--with-jemalloc"
 
