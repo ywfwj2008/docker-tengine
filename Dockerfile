@@ -30,9 +30,8 @@ RUN wget -c --no-check-certificate https://github.com/jemalloc/jemalloc/releases
 RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE_VERSION.tar.gz && \
     tar xzf pcre-$PCRE_VERSION.tar.gz && \
     cd pcre-$PCRE_VERSION && \
-    ./configure && \
-    make && \
-    make install
+    ./configure --enable-utf8 && \
+    make && make install
 
 # install tengine
 RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
@@ -56,8 +55,7 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
         --with-http_concat_module=shared \
         --with-http_sysguard_module=shared \
         $MALLOC_MODULE && \
-    make && \
-    make install
+    make && make install
 
 ADD ./conf/nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
 ADD ./conf/proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
