@@ -74,7 +74,6 @@ RUN chmod +x /etc/init.d/nginx && \
 # ending
 RUN mkdir -p $WWWLOGS_DIR && \
     mkdir -p $WWWROOT_DIR/default && \
-    echo "Hello World!" > /$WWWROOT_DIR/default/index.html && \
-    rm -rf /tmp/*
+    echo "Hello World!" > /$WWWROOT_DIR/default/index.html
 
 # CMD ["nginx", "-g", "daemon off;"]
