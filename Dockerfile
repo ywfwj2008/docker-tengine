@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:latest
 MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 
 ENV TENGINE_INSTALL_DIR=/usr/local/tengine
@@ -24,14 +24,16 @@ RUN wget -c --no-check-certificate https://github.com/jemalloc/jemalloc/releases
     ./configure && \
     make && make install && \
     echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf && \
-    ldconfig
+    ldconfig && \
+    rm -rf /tmp/*
 
 # install pcre
 RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE_VERSION.tar.gz && \
     tar xzf pcre-$PCRE_VERSION.tar.gz && \
     cd pcre-$PCRE_VERSION && \
     ./configure --enable-utf8 && \
-    make && make install
+    make && make install && \
+    rm -rf /tmp/*
 
 # install tengine
 RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
@@ -55,7 +57,8 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
         --with-http_concat_module=shared \
         --with-http_sysguard_module=shared \
         $MALLOC_MODULE && \
-    make && make install
+    make && make install && \
+    rm -rf /tmp/*
 
 ADD ./conf/nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
 ADD ./conf/proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
