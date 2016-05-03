@@ -37,6 +37,8 @@ RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programm
 
 # install tengine
 RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
+    wget -c --no-check-certificate -O nginx-upload-module-2.2.tar.gz https://github.com/vkholodkov/nginx-upload-module/archive/2.2.tar.gz && \
+    tar xzf nginx-upload-module-2.2.tar.gz && \
     tar xzf tengine-$TENGINE_VERSION.tar.gz && \
     cd tengine-tengine-$TENGINE_VERSION && \
     # Modify Tengine version
@@ -56,6 +58,7 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
         --with-http_flv_module \
         --with-http_concat_module=shared \
         --with-http_sysguard_module=shared \
+        --add-module=/tmp/nginx-upload-module-2.2 \
         $MALLOC_MODULE && \
     make && make install && \
     rm -rf /tmp/*
