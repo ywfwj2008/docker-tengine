@@ -7,7 +7,7 @@ ENV PCRE_VERSION=8.38
 ENV RUN_USER=www
 ENV WWWROOT_DIR=/home/wwwroot
 ENV WWWLOGS_DIR=/home/wwwlogs
-ENV JEMALLOC_VERSION=4.1.0
+ENV JEMALLOC_VERSION=4.2.0
 ENV MALLOC_MODULE="--with-jemalloc"
 
 RUN apt-get update && apt-get upgrade -y && \
@@ -79,4 +79,4 @@ RUN mkdir -p $WWWLOGS_DIR && \
     mkdir -p $WWWROOT_DIR/default && \
     echo "Hello World!" > /$WWWROOT_DIR/default/index.html
 
-# CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/bash"]
