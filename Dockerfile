@@ -11,7 +11,7 @@ ENV JEMALLOC_VERSION=4.2.0
 ENV MALLOC_MODULE="--with-jemalloc"
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev bzip2
+    apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev bzip2 psmisc
 RUN useradd -M -s /sbin/nologin $RUN_USER
 
 WORKDIR /tmp
