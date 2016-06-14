@@ -1,14 +1,14 @@
 FROM debian:latest
 MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 
-ENV TENGINE_INSTALL_DIR=/usr/local/tengine
-ENV TENGINE_VERSION=2.1.2_f
-ENV PCRE_VERSION=8.38
-ENV RUN_USER=www
-ENV WWWROOT_DIR=/home/wwwroot
-ENV WWWLOGS_DIR=/home/wwwlogs
-ENV JEMALLOC_VERSION=4.2.0
-ENV MALLOC_MODULE="--with-jemalloc"
+ENV TENGINE_INSTALL_DIR=/usr/local/tengine \
+    TENGINE_VERSION=2.1.2_f \
+    PCRE_VERSION=8.38 \
+    RUN_USER=www \
+    WWWROOT_DIR=/home/wwwroot \
+    WWWLOGS_DIR=/home/wwwlogs \
+    JEMALLOC_VERSION=4.2.1 \
+    MALLOC_MODULE="--with-jemalloc"
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev bzip2 psmisc
@@ -32,8 +32,7 @@ RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programm
     tar xzf pcre-$PCRE_VERSION.tar.gz && \
     cd pcre-$PCRE_VERSION && \
     ./configure --enable-utf8 && \
-    make && make install && \
-    rm -rf /tmp/*
+    make && make install
 
 # install tengine
 RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
@@ -47,8 +46,7 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
     sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc && \
     ./configure \
         --prefix=$TENGINE_INSTALL_DIR \
-        --user=$RUN_USER \
-        --group=$RUN_USER \
+        --user=$RUN_USER --group=$RUN_USER \
         --with-http_stub_status_module \
         --with-http_spdy_module \
         --with-http_ssl_module \
@@ -58,6 +56,8 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
         --with-http_flv_module \
         --with-http_concat_module=shared \
         --with-http_sysguard_module=shared \
+        --with-pcre=/tmp/pcre-$PCRE_VERSION \
+        --with-pcre-jit \
         --add-module=/tmp/nginx-upload-module-2.2 \
         $MALLOC_MODULE && \
     make && make install && \
