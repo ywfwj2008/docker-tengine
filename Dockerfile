@@ -29,10 +29,10 @@ RUN wget -c --no-check-certificate https://github.com/jemalloc/jemalloc/releases
     rm -rf /tmp/*
 
 # install tengine
-RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
-    wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE_VERSION.tar.gz && \
+RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE_VERSION.tar.gz && \
     wget -c --no-check-certificate https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz && \
     wget -c --no-check-certificate -O nginx-upload-module-2.2.tar.gz https://github.com/vkholodkov/nginx-upload-module/archive/2.2.tar.gz && \
+    wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
     tar xzf pcre-$PCRE_VERSION.tar.gz && \
     tar xzf openssl-$OPENSSL_VERSION.tar.gz && \
     tar xzf nginx-upload-module-2.2.tar.gz && \
