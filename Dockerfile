@@ -4,6 +4,7 @@ MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 ENV TENGINE_INSTALL_DIR=/usr/local/tengine \
     TENGINE_VERSION=2.1.2_f \
     PCRE_VERSION=8.38 \
+    OPENSSL_VERSION=1.0.2h \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
@@ -27,16 +28,13 @@ RUN wget -c --no-check-certificate https://github.com/jemalloc/jemalloc/releases
     ldconfig && \
     rm -rf /tmp/*
 
-# install pcre
-RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE_VERSION.tar.gz && \
-    tar xzf pcre-$PCRE_VERSION.tar.gz && \
-    cd pcre-$PCRE_VERSION && \
-    ./configure --enable-utf8 && \
-    make && make install
-
 # install tengine
 RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/tengine-$TENGINE_VERSION.tar.gz && \
+    wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-$PCRE_VERSION.tar.gz && \
+    wget -c --no-check-certificate https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz && \
     wget -c --no-check-certificate -O nginx-upload-module-2.2.tar.gz https://github.com/vkholodkov/nginx-upload-module/archive/2.2.tar.gz && \
+    tar xzf pcre-$PCRE_VERSION.tar.gz && \
+    tar xzf openssl-$OPENSSL_VERSION.tar.gz && \
     tar xzf nginx-upload-module-2.2.tar.gz && \
     tar xzf tengine-$TENGINE_VERSION.tar.gz && \
     cd tengine-tengine-$TENGINE_VERSION && \
@@ -56,6 +54,7 @@ RUN wget -c --no-check-certificate https://github.com/alibaba/tengine/archive/te
         --with-http_flv_module \
         --with-http_concat_module=shared \
         --with-http_sysguard_module=shared \
+        --with-openssl=/tmp/openssl-$OPENSSL_VERSION
         --with-pcre=/tmp/pcre-$PCRE_VERSION \
         --with-pcre-jit \
         --add-module=/tmp/nginx-upload-module-2.2 \
