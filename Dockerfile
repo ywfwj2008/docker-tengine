@@ -9,7 +9,12 @@ ENV TENGINE_INSTALL_DIR=/usr/local/tengine \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
     JEMALLOC_VERSION=4.2.1 \
-    MALLOC_MODULE="--with-jemalloc"
+    MALLOC_MODULE="--with-jemalloc" \
+    LIBICONV_VERSION=1.14 \
+    LIBMCRYPT_VERSION=2.5.8 \
+    MHASH_VERSION=0.9.9.9 \
+    MCRYPT_VERSION=2.6.8
+
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev bzip2 psmisc
