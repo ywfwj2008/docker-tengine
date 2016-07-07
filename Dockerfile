@@ -60,11 +60,11 @@ RUN wget -c --no-check-certificate ftp://ftp.csx.cam.ac.uk/pub/software/programm
         --add-module=/tmp/nginx-upload-module-2.2 \
         $MALLOC_MODULE && \
     make && make install && \
+    touch $TENGINE_INSTALL_DIR/conf/none.conf && \
     rm -rf /tmp/*
 
 ADD ./conf/nginx.conf $TENGINE_INSTALL_DIR/conf/nginx.conf
 ADD ./conf/proxy.conf $TENGINE_INSTALL_DIR/conf/proxy.conf
-ADD ./conf/none.conf  $TENGINE_INSTALL_DIR/conf/none.conf
 ADD ./etc/init.d/nginx /etc/init.d/nginx
 ADD ./etc/logrotate.d/nginx /etc/logrotate.d/nginx
 
@@ -72,6 +72,45 @@ RUN chmod +x /etc/init.d/nginx && \
     update-rc.d nginx defaults && \
     ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
     ldconfig
+
+# install php dependent
+ADD ./patch/libiconv-glibc-2.16.patch /tmp/libiconv-glibc-2.16.patch
+RUN wget -c --no-check-certificate http://ftp.gnu.org/pub/gnu/libiconv/libiconv-$LIBICONV_VERSION.tar.gz && \
+    tar xzf libiconv-$LIBICONV_VERSION.tar.gz && \
+    patch -d libiconv-$LIBICONV_VERSION -p0 < libiconv-glibc-2.16.patch && \
+    cd libiconv-$LIBICONV_VERSION && \
+    ./configure --prefix=/usr/local && \
+    make && make install && \
+    rm -rf /tmp/*
+
+# install mhash
+RUN wget -c --no-check-certificate http://downloads.sourceforge.net/project/mhash/mhash/$MHASH_VERSION/mhash-$MHASH_VERSION.tar.gz && \
+    tar xzf mhash-$MHASH_VERSION.tar.gz && \
+    cd mhash-$MHASH_VERSION && \
+    ./configure && \
+    make && make install && \
+    rm -rf /tmp/*
+
+# install libmcrypt
+RUN wget -c --no-check-certificate http://downloads.sourceforge.net/project/mcrypt/Libmcrypt/$LIBMCRYPT_VERSION/libmcrypt-$LIBMCRYPT_VERSION.tar.gz && \
+    tar xzf libmcrypt-$LIBMCRYPT_VERSION.tar.gz && \
+    cd libmcrypt-$LIBMCRYPT_VERSION && \
+    ./configure && \
+    make && make install && \
+    ldconfig && \
+    cd libltdl && \
+    ./configure --enable-ltdl-install && \
+    make && make install && \
+    rm -rf /tmp/*
+
+# install mcrypt
+RUN wget -c --no-check-certificate http://downloads.sourceforge.net/project/mcrypt/MCrypt/$MCRYPT_VERSION/mcrypt-$MCRYPT_VERSION.tar.gz && \
+    tar xzf mcrypt-$MCRYPT_VERSION.tar.gz && \
+    cd mcrypt-$MCRYPT_VERSION && \
+    ldconfig && \
+    ./configure && \
+    make && make install && \
+    rm -rf /tmp/*
 
 # ending
 RUN mkdir -p $WWWLOGS_DIR && \
