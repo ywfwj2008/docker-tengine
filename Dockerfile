@@ -78,7 +78,8 @@ RUN chmod +x /etc/init.d/nginx && \
     ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
     ldconfig
 
-# install php dependent
+# php dependent
+# install libiconv
 ADD ./patch/libiconv-glibc-2.16.patch /tmp/libiconv-glibc-2.16.patch
 RUN wget -c --no-check-certificate http://ftp.gnu.org/pub/gnu/libiconv/libiconv-$LIBICONV_VERSION.tar.gz && \
     tar xzf libiconv-$LIBICONV_VERSION.tar.gz && \
