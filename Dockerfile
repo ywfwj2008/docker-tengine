@@ -78,4 +78,7 @@ RUN mkdir -p $WWWLOGS_DIR && \
     mkdir -p $WWWROOT_DIR/default && \
     echo "Hello World!" > /$WWWROOT_DIR/default/index.html
 
+# expose port
+EXPOSE 80 443
+
 CMD ["/bin/bash"]
