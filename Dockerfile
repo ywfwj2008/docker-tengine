@@ -9,15 +9,10 @@ ENV TENGINE_INSTALL_DIR=/usr/local/tengine \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
     JEMALLOC_VERSION=4.2.1 \
-    MALLOC_MODULE="--with-jemalloc" \
-    LIBICONV_VERSION=1.14 \
-    LIBMCRYPT_VERSION=2.5.8 \
-    MHASH_VERSION=0.9.9.9 \
-    MCRYPT_VERSION=2.6.8
-
+    MALLOC_MODULE="--with-jemalloc"
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev bzip2 psmisc patch
+    apt-get install -y ca-certificates wget gcc g++ make cmake openssl libssl-dev bzip2 psmisc
 RUN useradd -M -s /sbin/nologin $RUN_USER
 
 WORKDIR /tmp
@@ -77,46 +72,6 @@ RUN chmod +x /etc/init.d/nginx && \
     update-rc.d nginx defaults && \
     ln -s /usr/local/tengine/sbin/nginx /usr/sbin/nginx && \
     ldconfig
-
-# php dependent
-# install libiconv
-ADD ./patch/libiconv-glibc-2.16.patch /tmp/libiconv-glibc-2.16.patch
-RUN wget -c --no-check-certificate http://ftp.gnu.org/pub/gnu/libiconv/libiconv-$LIBICONV_VERSION.tar.gz && \
-    tar xzf libiconv-$LIBICONV_VERSION.tar.gz && \
-    patch -d libiconv-$LIBICONV_VERSION -p0 < libiconv-glibc-2.16.patch && \
-    cd libiconv-$LIBICONV_VERSION && \
-    ./configure --prefix=/usr/local && \
-    make && make install && \
-    rm -rf /tmp/*
-
-# install mhash
-RUN wget -c --no-check-certificate http://downloads.sourceforge.net/project/mhash/mhash/$MHASH_VERSION/mhash-$MHASH_VERSION.tar.gz && \
-    tar xzf mhash-$MHASH_VERSION.tar.gz && \
-    cd mhash-$MHASH_VERSION && \
-    ./configure && \
-    make && make install && \
-    rm -rf /tmp/*
-
-# install libmcrypt
-RUN wget -c --no-check-certificate http://downloads.sourceforge.net/project/mcrypt/Libmcrypt/$LIBMCRYPT_VERSION/libmcrypt-$LIBMCRYPT_VERSION.tar.gz && \
-    tar xzf libmcrypt-$LIBMCRYPT_VERSION.tar.gz && \
-    cd libmcrypt-$LIBMCRYPT_VERSION && \
-    ./configure && \
-    make && make install && \
-    ldconfig && \
-    cd libltdl && \
-    ./configure --enable-ltdl-install && \
-    make && make install && \
-    rm -rf /tmp/*
-
-# install mcrypt
-RUN wget -c --no-check-certificate http://downloads.sourceforge.net/project/mcrypt/MCrypt/$MCRYPT_VERSION/mcrypt-$MCRYPT_VERSION.tar.gz && \
-    tar xzf mcrypt-$MCRYPT_VERSION.tar.gz && \
-    cd mcrypt-$MCRYPT_VERSION && \
-    ldconfig && \
-    ./configure && \
-    make && make install && \
-    rm -rf /tmp/*
 
 # ending
 RUN mkdir -p $WWWLOGS_DIR && \
