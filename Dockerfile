@@ -3,8 +3,8 @@ MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 
 ENV TENGINE_INSTALL_DIR=/usr/local/tengine \
     TENGINE_VERSION=2.1.2_f \
-    PCRE_VERSION=8.38 \
-    OPENSSL_VERSION=1.0.2h \
+    PCRE_VERSION=8.39 \
+    OPENSSL_VERSION=1.1.0 \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
