@@ -81,4 +81,4 @@ RUN mkdir -p $WWWLOGS_DIR && \
 # expose port
 EXPOSE 80 443
 
-CMD ["/bin/bash"]
+CMD ["nginx", "-g", "daemon off;"]
