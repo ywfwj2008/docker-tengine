@@ -4,14 +4,14 @@ MAINTAINER ywfwj2008 <ywfwj2008@163.com>
 ENV TENGINE_INSTALL_DIR=/usr/local/tengine \
     TENGINE_VERSION=2.1.2_f \
     PCRE_VERSION=8.39 \
-    OPENSSL_VERSION=1.0.2h \
+    OPENSSL_VERSION=1.0.2j \
     RUN_USER=www \
     WWWROOT_DIR=/home/wwwroot \
     WWWLOGS_DIR=/home/wwwlogs \
-    JEMALLOC_VERSION=4.2.1 \
+    JEMALLOC_VERSION=4.3.1 \
     MALLOC_MODULE="--with-jemalloc" \
     LIBICONV_VERSION=1.14 \
-    CURL_VERSION=7.35.0 \
+    CURL_VERSION=7.51.0 \
     LIBMCRYPT_VERSION=2.5.8 \
     MHASH_VERSION=0.9.9.9 \
     MCRYPT_VERSION=2.6.8
